@@ -1,12 +1,13 @@
 package klaxon.klaxon.jbest;
 
+import static java.lang.String.valueOf;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
 public class Main {
 
@@ -17,8 +18,12 @@ public class Main {
 
         var output = Path.of(args[0].replaceFirst("\\.c$", ".s"));
         try (var writer = Files.newBufferedWriter(output, TRUNCATE_EXISTING, CREATE)) {
-            writer.append("  mov eax, 42\n");
-            writer.append("  ret\n");
+            emit42(writer, 137);
         }
+    }
+
+    private static void emit42(BufferedWriter writer, int integer) throws IOException {
+        writer.append("  mov eax, ").append(valueOf(integer)).append("\n");
+        writer.append("  ret\n");
     }
 }

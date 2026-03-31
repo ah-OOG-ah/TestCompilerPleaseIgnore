@@ -1,2 +1,2 @@
-  mov eax, 42
+  mov eax, 137
   ret
