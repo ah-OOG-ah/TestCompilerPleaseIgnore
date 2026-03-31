@@ -1,0 +1,1 @@
+clang -O3 -fomit-frame-pointer -S -masm=intel "$@"
