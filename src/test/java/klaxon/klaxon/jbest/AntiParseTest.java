@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import org.junit.jupiter.api.Test;
 
-public class AnitParseTest {
+public class AntiParseTest {
     @Test
     void repeatNumbers() {
         var input = new InputBlock("1942 8392 + 842 - 92 * 3 / 7");
