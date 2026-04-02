@@ -7,7 +7,6 @@ import klaxon.klaxon.jbest.token.Token;
 
 /// An abstract syntax tree, for C!
 public final class AST {
-    public Node head;
 
     public static Node getNode(Supplier<Token> token) {
         // Assume the next three nodes are primary, operator, anything
