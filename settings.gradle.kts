@@ -1,4 +1,4 @@
-rootProject.name = "JBest"
+rootProject.name = "TestCompilerPleaseIgnore"
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
