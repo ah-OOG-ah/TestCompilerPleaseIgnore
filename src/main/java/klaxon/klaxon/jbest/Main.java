@@ -1,22 +1,25 @@
 package klaxon.klaxon.jbest;
 
 import static java.lang.Integer.parseInt;
-import static java.lang.String.valueOf;
 import static java.nio.CharBuffer.wrap;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.CharBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Main {
 
     static void main(String[] args) {
+
+    }
+
+    public static ArrayList<Token> makeAllTokens(InputBlock block) {
+        final var ret = new ArrayList<Token>();
+        var tok = tokenize(block);
+        while (!(tok instanceof Token.EOF)) {
+            ret.add(tok);
+            tok = tokenize(block);
+        }
+
+        return ret;
     }
 
     public static Token tokenize(InputBlock block) {
@@ -48,7 +51,7 @@ public class Main {
         return new Token.Integer(parseInt(wrap(buffer), 0, bufIdx, 10));
     }
 
-    public static final class InputBlock {
+    public static class InputBlock {
         private final char[] input;
         private int index;
 
@@ -73,7 +76,9 @@ public class Main {
             return n;
         }
 
+        /// Note: the input can only be consumed once. If an EOF is put back, the block remains at EOF.
         void back() {
+            if (index >= buffer.length) return;
             index--;
         }
     }
