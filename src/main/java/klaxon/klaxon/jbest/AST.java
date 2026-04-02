@@ -26,7 +26,7 @@ public final class AST {
     /// Grabs an immediate value, or else DIES!
     public static Node getPrimaryNode(Token token) {
         if (!(token instanceof Token.Integer(int value))) {
-            throw new IllegalStateException("Unexpected value: " + token);
+            throw new IllegalArgumentException("Could not convert " + token + " into an integer!");
         }
 
         return new Node.LeafNode(value);
