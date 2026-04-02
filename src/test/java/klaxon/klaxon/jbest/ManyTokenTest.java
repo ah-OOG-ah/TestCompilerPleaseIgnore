@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class ManyTokenTest {
     @Test
     void many1() {
-        var input = new Main.InputBlock("1942 + 842 - 92 * 3 / 7");
+        var input = new InputBlock("1942 + 842 - 92 * 3 / 7");
         var token = Main.makeAllTokens(input);
         assertEquals(List.of(
                 new Token.Integer(1942),
