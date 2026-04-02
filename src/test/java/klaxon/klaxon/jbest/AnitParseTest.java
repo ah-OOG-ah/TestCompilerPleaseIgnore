@@ -1,7 +1,5 @@
 package klaxon.klaxon.jbest;
 
-import static klaxon.klaxon.jbest.Reference.getInvalidInput;
-import static klaxon.klaxon.jbest.Reference.getInvalidInput2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
@@ -10,16 +8,33 @@ import org.junit.jupiter.api.Test;
 public class AnitParseTest {
     @Test
     void repeatNumbers() {
-        var input = getInvalidInput();
+        var input = new InputBlock("1942 8392 + 842 - 92 * 3 / 7");
         var toks = Main.makeAllTokens(input);
         var e = assertThrowsExactly(IllegalArgumentException.class, () -> AST.getNode(toks.iterator()::next));
         assertEquals("Could not convert Integer[value=8392] into an arithmetic operation!", e.getMessage());
     }
+
     @Test
     void repeatOperators() {
-        var input = getInvalidInput2();
+        var input = new InputBlock("1942 - + 842 - 92 * 3 / 7");
         var toks = Main.makeAllTokens(input);
         var e = assertThrowsExactly(IllegalArgumentException.class, () -> AST.getNode(toks.iterator()::next));
         assertEquals("Could not convert Plus[] into an integer!", e.getMessage());
+    }
+
+    @Test
+    void missingNumberStart() {
+        var input = new InputBlock(" + 842 - 92 * 3 / 7");
+        var toks = Main.makeAllTokens(input);
+        var e = assertThrowsExactly(IllegalArgumentException.class, () -> AST.getNode(toks.iterator()::next));
+        assertEquals("Could not convert Plus[] into an integer!", e.getMessage());
+    }
+
+    @Test
+    void missingNumberEnd() {
+        var input = new InputBlock("1942 + 842 - 92 * 3 / ");
+        var toks = Main.makeAllTokens(input);
+        var e = assertThrowsExactly(IllegalArgumentException.class, () -> AST.getNode(toks.iterator()::next));
+        assertEquals("Could not convert EOF[] into an integer!", e.getMessage());
     }
 }

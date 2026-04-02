@@ -7,14 +7,6 @@ public class Reference {
         return new InputBlock("1942 + 842 - 92 * 3 / 7");
     }
 
-    static InputBlock getInvalidInput() {
-        return new InputBlock("1942 8392 + 842 - 92 * 3 / 7");
-    }
-
-    static InputBlock getInvalidInput2() {
-        return new InputBlock("1942 - + 842 - 92 * 3 / 7");
-    }
-
     static AST.Node.ArithNode getReferenceAST() {
         return new AST.Node.ArithNode(
                 new AST.Node.LeafNode(1942),
