@@ -31,7 +31,7 @@ public class ManyTokenTest {
     void manyTree() {
         var input = Reference.getReferenceInput();
         var tokens = Main.makeAllTokens(input);
-        var ast = AST.getNode(tokens.iterator()::next);
+        var ast = PrattParser.parseNodes(tokens.iterator()::next);
         var reference = Reference.getReferenceAST();
         var logger = Logger.getLogger("Tests");
         logger.log(Level.INFO, Util.printAST(reference));
