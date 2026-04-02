@@ -1,4 +1,4 @@
-package klaxon.klaxon.jbest;
+package klaxon.klaxon.jbest.token;
 
 public sealed interface Token {
     record Integer(int value) implements Token { }

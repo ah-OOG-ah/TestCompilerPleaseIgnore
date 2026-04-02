@@ -2,6 +2,7 @@ package klaxon.klaxon.jbest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import klaxon.klaxon.jbest.token.Token;
 import org.junit.jupiter.api.Test;
 
 public class TokenizerTest {
