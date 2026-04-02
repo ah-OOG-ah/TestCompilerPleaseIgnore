@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class ManyTokenTest {
     @Test
     void many1() {
-        var input = new InputBlock("1942 + 842 - 92 * 3 / 7");
+        var input = getReferenceInput();
         var token = Main.makeAllTokens(input);
         assertEquals(List.of(
                 new Token.Integer(1942),
@@ -32,10 +32,23 @@ public class ManyTokenTest {
 
     @Test
     void manyTree() {
-        var input = new InputBlock("1942 + 842 - 92 * 3 / 7");
+        var input = getReferenceInput();
         var tokens = Main.makeAllTokens(input);
         var ast = AST.getNode(tokens.iterator()::next);
-        var reference = new ArithNode(
+        var reference = getReferenceAST();
+        var logger = Logger.getLogger("Tests");
+        logger.log(Level.INFO, Util.printAST(reference));
+        logger.log(Level.INFO, Util.printAST(ast));
+
+        assertEquals(reference, ast);
+    }
+
+    private static InputBlock getReferenceInput() {
+        return new InputBlock("1942 + 842 - 92 * 3 / 7");
+    }
+
+    private static ArithNode getReferenceAST() {
+        return new ArithNode(
                 new LeafNode(1942),
                 Operation.ADD,
                 new ArithNode(
@@ -52,10 +65,15 @@ public class ManyTokenTest {
                         )
                 )
         );
-        var logger = Logger.getLogger("Tests");
-        logger.log(Level.INFO, Util.printAST(reference));
-        logger.log(Level.INFO, Util.printAST(ast));
+    }
 
-        assertEquals(reference, ast);
+    private static int getReferenceValue() {
+        //noinspection PointlessArithmeticExpression
+        return 1942 + (842 - (92 * (3 / 7)));
+    }
+
+    @Test
+    void eval() {
+        assertEquals(getReferenceValue(), Interpreter.interpret(getReferenceAST()));
     }
 }
