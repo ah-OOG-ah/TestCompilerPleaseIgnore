@@ -2,7 +2,6 @@ package klaxon.klaxon.jbest;
 
 import ajs.printutils.PrettyPrintTree;
 import java.util.List;
-import org.w3c.dom.Node;
 
 public class Util {
     public static String printAST(AST.Node root) {
