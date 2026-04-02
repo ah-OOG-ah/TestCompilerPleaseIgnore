@@ -12,7 +12,7 @@ public enum Operation {
             case Token.Minus _ -> SUB;
             case Token.Star _ -> MUL;
             case Token.FwdSlash _ -> DIV;
-            default -> throw new IllegalArgumentException();
+            default -> throw new IllegalArgumentException("Could not convert " + t + " into an arithmetic operation!");
         };
     }
 }
