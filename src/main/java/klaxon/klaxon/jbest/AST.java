@@ -8,7 +8,10 @@ import klaxon.klaxon.jbest.token.Token;
 /// An abstract syntax tree, for C!
 public final class AST {
 
-    public static Node getNode(Supplier<Token> token) {
+    /// The entry point to the parser - i.e. where the going gets tough.
+    ///
+    /// Currently handles: basic arithmetic.
+    public static Node parseNodes(Supplier<Token> token) {
         // Assume the next three nodes are primary, operator, anything
         final var left = getPrimaryNode(token.get());
         var next = token.get();
@@ -18,7 +21,7 @@ public final class AST {
 
         // BUT WAIT, THERE'S MORE
         final var op = Operation.operationOf(next);
-        final var right = getNode(token);
+        final var right = AST.parseNodes(token);
 
         return new Node.ArithNode(left, op, right);
     }
