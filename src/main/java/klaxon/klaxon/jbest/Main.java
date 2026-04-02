@@ -61,8 +61,7 @@ public class Main {
         }
 
         public InputBlock(String input) {
-            this.input = input.toCharArray();
-            this.index = 0;
+            this(input.toCharArray(), 0);
         }
 
         char next() {
