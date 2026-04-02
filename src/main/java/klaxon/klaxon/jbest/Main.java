@@ -14,11 +14,11 @@ public class Main {
 
     public static ArrayList<Token> makeAllTokens(InputBlock block) {
         final var ret = new ArrayList<Token>();
-        var tok = tokenize(block);
-        while (!(tok instanceof Token.EOF)) {
-            ret.add(tok);
+        Token tok;
+        do {
             tok = tokenize(block);
-        }
+            ret.add(tok);
+        } while (!(tok instanceof Token.EOF));
 
         return ret;
     }

@@ -20,7 +20,8 @@ public class ManyTokenTest {
                 new Token.Star(),
                 new Token.Integer(3),
                 new Token.FwdSlash(),
-                new Token.Integer(7)
+                new Token.Integer(7),
+                new Token.EOF()
         ), token);
     }
 }
