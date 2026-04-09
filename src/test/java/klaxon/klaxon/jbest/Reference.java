@@ -28,7 +28,6 @@ public class Reference {
     }
 
     static int getReferenceValue() {
-        //noinspection PointlessArithmeticExpression
         return 1942 + 842 - 92 * 3 / 7;
     }
 }
