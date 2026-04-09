@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import klaxon.klaxon.jbest.codegen.Interpreter;
 import klaxon.klaxon.jbest.token.Token;
 import klaxon.klaxon.jbest.token.TokenIO;
 import klaxon.klaxon.jbest.token.TokenStream;
