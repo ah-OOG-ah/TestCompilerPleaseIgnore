@@ -21,8 +21,8 @@ public class PrattParser {
 
         // BUT WAIT, THERE'S MORE
         // If this operator has a greater precedence than the previous one...
-        int curPrecedence = precedence(currentOp);
-        while (curPrecedence > prevPrecedence) {
+        int curPrecedence;
+        while ((curPrecedence = precedence(currentOp)) > prevPrecedence) {
             // we're of the form ... (prev)+ 800 (cur)* ..., or similar, and need to return *our* binary op as the
             // parent instead. But since the *next next* op might do the same, we jump ahead again. This recurses as
             // necessary until it finds an operator of lower or equal precedence to ours.
@@ -32,11 +32,11 @@ public class PrattParser {
             // ...at which point we join them.
             left = new AST.Node.ArithNode(left, Operation.operationOf(currentOp), right);
 
-            // Update the precedence if the next token isn't an EOF. It can't be a number, since we would have just
+            // Update the current op if the next token isn't an EOF. It can't be a number, since we would have just
             // consumed one.
             switch (tokens.peek()) {
                 case Token.EOF _ -> { return left; }
-                case Token t -> curPrecedence = precedence(t);
+                case Token t -> currentOp = t;
             }
         }
 
