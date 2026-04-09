@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import klaxon.klaxon.jbest.token.Token;
+import klaxon.klaxon.jbest.token.TokenStream;
 import org.junit.jupiter.api.Test;
 
 public class ManyTokenTest {
@@ -31,7 +32,7 @@ public class ManyTokenTest {
     void manyTree() {
         var input = Reference.getReferenceInput();
         var tokens = Main.makeAllTokens(input);
-        var ast = PrattParser.parseNodes(tokens.iterator()::next);
+        var ast = PrattParser.getBinaryNode(new TokenStream(tokens), 0);
         var reference = Reference.getReferenceAST();
         var logger = Logger.getLogger("Tests");
         logger.log(Level.INFO, Util.printAST(reference));
