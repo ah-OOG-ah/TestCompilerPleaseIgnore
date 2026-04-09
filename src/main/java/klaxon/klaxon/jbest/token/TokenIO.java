@@ -22,12 +22,13 @@ public class TokenIO {
     public static Token tokenize(InputBlock block) {
         var charr = block.nextNonWhitespace();
         return switch (charr) {
-            case '+' -> new Token.Plus();
-            case '-' -> new Token.Minus();
-            case '*' -> new Token.Star();
-            case '/' -> new Token.FwdSlash();
+            case '+' -> Token.T_PLUS;
+            case '-' -> Token.T_MINUS;
+            case '*' -> Token.T_STAR;
+            case '/' -> Token.T_FWD_SLASH;
             case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> tokenizeInt(block, charr);
-            default -> new Token.EOF();
+            case InputBlock.EOF -> Token.T_EOF;
+            default -> throw new IllegalArgumentException("Unexpected character '" + charr + "'.");
         };
     }
 

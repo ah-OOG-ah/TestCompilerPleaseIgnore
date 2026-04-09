@@ -4,6 +4,8 @@ public class InputBlock {
     private final char[] input;
     private int index;
 
+    public static final char EOF = 128;
+
     public InputBlock(char[] input, int index) {
         this.input = input;
         this.index = index;
@@ -14,7 +16,7 @@ public class InputBlock {
     }
 
     char next() {
-        if (index >= input.length) return 128;
+        if (index >= input.length) return EOF;
         return input[index++];
     }
 
