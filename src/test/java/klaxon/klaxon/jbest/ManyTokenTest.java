@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import klaxon.klaxon.jbest.token.Token;
+import klaxon.klaxon.jbest.token.TokenIO;
 import klaxon.klaxon.jbest.token.TokenStream;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ public class ManyTokenTest {
     @Test
     void many1() {
         var input = Reference.getReferenceInput();
-        var token = Main.makeAllTokens(input);
+        var token = TokenIO.makeAllTokens(input);
         assertEquals(List.of(
                 new Token.Integer(1942),
                 new Token.Plus(),
@@ -31,7 +32,7 @@ public class ManyTokenTest {
     @Test
     void manyTree() {
         var input = Reference.getReferenceInput();
-        var tokens = Main.makeAllTokens(input);
+        var tokens = TokenIO.makeAllTokens(input);
         var ast = PrattParser.getBinaryNode(new TokenStream(tokens), 0);
         var reference = Reference.getReferenceAST();
         var logger = Logger.getLogger("Tests");

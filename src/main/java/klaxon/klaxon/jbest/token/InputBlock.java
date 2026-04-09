@@ -1,4 +1,4 @@
-package klaxon.klaxon.jbest;
+package klaxon.klaxon.jbest.token;
 
 public class InputBlock {
     private final char[] input;

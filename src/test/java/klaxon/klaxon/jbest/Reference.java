@@ -1,5 +1,6 @@
 package klaxon.klaxon.jbest;
 
+import klaxon.klaxon.jbest.token.InputBlock;
 import klaxon.klaxon.jbest.token.Operation;
 
 public class Reference {
