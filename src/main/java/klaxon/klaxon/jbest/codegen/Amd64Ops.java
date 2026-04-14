@@ -74,6 +74,15 @@ public class Amd64Ops {
         return new ByteImmutableList(ret);
     }
 
+    /// Returns the MOV dst, src instruction.
+    public static ByteImmutableList mov(Register src, Register dst) {
+        var ret = buf(src, dst, 5);
+        ret.add((byte) 0x89);
+        ret.add((byte) (0b1100_0000 | (src.code32 << 3) | dst.code32)); // MODR/M byte
+
+        return new ByteImmutableList(ret);
+    }
+
     /// Returns the ADD dst, src instruction.
     public static ByteImmutableList add(Register src, Register dst) {
         var ret = buf(src, dst, 2);
