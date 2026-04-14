@@ -121,4 +121,10 @@ public class Amd64Ops {
     /// Returns the SUB dst, src instruction. That is, computes
     /// dst = dst - src
     public static ByteImmutableList sub(Register src, Register dst) { return insnMR((byte) 0x29, src, dst); }
+
+    /// The syscall instruction. Note that this does **none** of the work to load the syscall; it only produces the
+    /// instruction.
+    public static ByteImmutableList syscall() {
+        return bOfIs(0x0F, 0x05);
+    }
 }
