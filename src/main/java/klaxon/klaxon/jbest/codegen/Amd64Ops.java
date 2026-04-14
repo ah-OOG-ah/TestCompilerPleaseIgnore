@@ -5,6 +5,7 @@ import static klaxon.klaxon.jbest.Util.bOfIs;
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 
 public class Amd64Ops {
     public static final byte REX = 0b0100_0000;
@@ -33,7 +34,7 @@ public class Amd64Ops {
         final String name32;
         final byte code32;
 
-        static final Register[] VALUES = values();
+        public static final Register[] VALUES = values();
 
         Register(String name32, byte code32) {
             this.name32 = name32;
@@ -42,6 +43,16 @@ public class Amd64Ops {
 
         public boolean extended() {
             return ordinal() >= R8.ordinal();
+        }
+    }
+    
+    public static class RegisterSet extends ObjectArraySet<Register> {
+        public Register pop() {
+            if (isEmpty()) throw new IllegalStateException("No register to pop!");
+            --size;
+            final var ret = a[size];
+            a[size] = null;
+            return (Register) ret;
         }
     }
 
