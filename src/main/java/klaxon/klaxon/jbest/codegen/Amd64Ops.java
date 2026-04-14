@@ -45,7 +45,7 @@ public class Amd64Ops {
             return ordinal() >= R8.ordinal();
         }
     }
-    
+
     public static class RegisterSet extends ObjectArraySet<Register> {
         public Register pop() {
             if (isEmpty()) throw new IllegalStateException("No register to pop!");
