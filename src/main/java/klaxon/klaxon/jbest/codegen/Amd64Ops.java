@@ -74,24 +74,24 @@ public class Amd64Ops {
         return new ByteImmutableList(ret);
     }
 
-    /// Returns the MOV dst, 0xvalue instruction.
-    public static ByteImmutableList movImmediate(int value, Register register) {
-        var ret = buf(register, 5);
-        ret.add((byte) (0xb8 | register.code32));
-        ret.addAll(bOfI(value));
+    /*
 
-        return new ByteImmutableList(ret);
-    }
+    Below are the actual instructions
 
-    /// Returns the MOV dst, src instruction.
-    public static ByteImmutableList mov(Register src, Register dst) { return insnMR((byte) 0x89, src, dst); }
+     */
 
     /// Returns the ADD dst, src instruction.
     public static ByteImmutableList add(Register src, Register dst) { return insnMR((byte) 0x01, src, dst); }
 
-    /// Returns the SUB dst, src instruction. That is, computes
-    /// dst = dst - src
-    public static ByteImmutableList sub(Register src, Register dst) { return insnMR((byte) 0x29, src, dst); }
+    /// Returns the IDIV src instruction. That is, computes
+    /// eax = edx:eax / src
+    public static ByteImmutableList idiv(Register src) {
+        var ret = buf(src, 2);
+        ret.add((byte) 0xF7);
+        ret.add((byte) (0b1111_1000 | src.code32));
+
+        return new ByteImmutableList(ret);
+    }
 
     /// Returns the IMUL dst, src instruction. That is, computes
     /// dst = dst * src
@@ -103,13 +103,19 @@ public class Amd64Ops {
         return new ByteImmutableList(ret);
     }
 
-    /// Returns the IDIV src instruction. That is, computes
-    /// eax = edx:eax / src
-    public static ByteImmutableList idiv(Register src) {
-        var ret = buf(src, 2);
-        ret.add((byte) 0xF7);
-        ret.add((byte) (0b1111_1000 | src.code32));
+    /// Returns the MOV dst, src instruction.
+    public static ByteImmutableList mov(Register src, Register dst) { return insnMR((byte) 0x89, src, dst); }
+
+    /// Returns the MOV dst, 0xvalue instruction.
+    public static ByteImmutableList movImmediate(int value, Register register) {
+        var ret = buf(register, 5);
+        ret.add((byte) (0xb8 | register.code32));
+        ret.addAll(bOfI(value));
 
         return new ByteImmutableList(ret);
     }
+
+    /// Returns the SUB dst, src instruction. That is, computes
+    /// dst = dst - src
+    public static ByteImmutableList sub(Register src, Register dst) { return insnMR((byte) 0x29, src, dst); }
 }
