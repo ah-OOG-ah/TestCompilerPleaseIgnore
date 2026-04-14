@@ -101,4 +101,14 @@ public class Amd64Ops {
 
         return new ByteImmutableList(ret);
     }
+
+    /// Returns the IDIV src instruction. That is, computes
+    /// eax = edx:eax / src
+    public static ByteImmutableList idiv(Register src) {
+        var ret = buf(src, 2);
+        ret.add((byte) 0xF7);
+        ret.add((byte) (0b1111_1000 | src.code32));
+
+        return new ByteImmutableList(ret);
+    }
 }
