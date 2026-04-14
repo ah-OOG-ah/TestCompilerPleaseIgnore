@@ -83,6 +83,9 @@ public class Amd64Ops {
     /// Returns the ADD dst, src instruction.
     public static ByteImmutableList add(Register src, Register dst) { return insnMR((byte) 0x01, src, dst); }
 
+    /// Returns CDQ. That sign-extends eax into edx:eax.
+    public static byte cdq() { return (byte) 0x99; }
+
     /// Returns the IDIV src instruction. That is, computes
     /// eax = edx:eax / src
     public static ByteImmutableList idiv(Register src) {
