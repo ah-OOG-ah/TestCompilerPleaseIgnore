@@ -3,7 +3,7 @@ package klaxon.klaxon.jbest;
 import ajs.printutils.PrettyPrintTree;
 import java.util.List;
 
-public class Util {
+public class TestUtil {
     public static String printAST(AST.Node root) {
         final var printer = new PrettyPrintTree<AST.Node>(
                 node -> switch (node) {

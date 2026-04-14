@@ -37,8 +37,8 @@ public class ManyTokenTest {
         var ast = PrattParser.getBinaryNode(new TokenStream(tokens), 0);
         var reference = Reference.getReferenceAST();
         var logger = Logger.getLogger("Tests");
-        logger.log(Level.INFO, Util.printAST(reference));
-        logger.log(Level.INFO, Util.printAST(ast));
+        logger.log(Level.INFO, TestUtil.printAST(reference));
+        logger.log(Level.INFO, TestUtil.printAST(ast));
 
         assertEquals(reference, ast);
     }
