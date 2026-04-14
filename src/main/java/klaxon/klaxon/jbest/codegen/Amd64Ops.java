@@ -84,20 +84,14 @@ public class Amd64Ops {
     }
 
     /// Returns the MOV dst, src instruction.
-    public static ByteImmutableList mov(Register src, Register dst) {
-        return insnMR((byte) 0x89, src, dst);
-    }
+    public static ByteImmutableList mov(Register src, Register dst) { return insnMR((byte) 0x89, src, dst); }
 
     /// Returns the ADD dst, src instruction.
-    public static ByteImmutableList add(Register src, Register dst) {
-        return insnMR((byte) 0x01, src, dst);
-    }
+    public static ByteImmutableList add(Register src, Register dst) { return insnMR((byte) 0x01, src, dst); }
 
     /// Returns the SUB dst, src instruction. That is, computes
     /// dst = dst - src
-    public static ByteImmutableList sub(Register src, Register dst) {
-        return insnMR((byte) 0x29, src, dst);
-    }
+    public static ByteImmutableList sub(Register src, Register dst) { return insnMR((byte) 0x29, src, dst); }
 
     /// Returns the IMUL dst, src instruction. That is, computes
     /// dst = dst * src
