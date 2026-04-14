@@ -65,6 +65,15 @@ public class Amd64Ops {
         return ret;
     }
 
+    /// Many instructions are of the same form, listed as MR in Intel's documentation. This is a helper for any of them.
+    private static ByteImmutableList insnMR(byte opcode, Register src, Register dst) {
+        var ret = buf(src, dst, 2);
+        ret.add(opcode);
+        ret.add((byte) (0b1100_0000 | (src.code32 << 3) | dst.code32)); // MODR/M byte
+
+        return new ByteImmutableList(ret);
+    }
+
     /// Returns the MOV dst, 0xvalue instruction.
     public static ByteImmutableList movImmediate(int value, Register register) {
         var ret = buf(register, 5);
@@ -76,29 +85,18 @@ public class Amd64Ops {
 
     /// Returns the MOV dst, src instruction.
     public static ByteImmutableList mov(Register src, Register dst) {
-        var ret = buf(src, dst, 5);
-        ret.add((byte) 0x89);
-        ret.add((byte) (0b1100_0000 | (src.code32 << 3) | dst.code32)); // MODR/M byte
-
-        return new ByteImmutableList(ret);
+        return insnMR((byte) 0x89, src, dst);
     }
 
     /// Returns the ADD dst, src instruction.
     public static ByteImmutableList add(Register src, Register dst) {
-        var ret = buf(src, dst, 2);
-        ret.add((byte) 0x01);
-        ret.add((byte) (0b1100_0000 | (src.code32 << 3) | dst.code32)); // MODR/M byte
-        return new ByteImmutableList(ret);
+        return insnMR((byte) 0x01, src, dst);
     }
 
     /// Returns the SUB dst, src instruction. That is, computes
     /// dst = dst - src
     public static ByteImmutableList sub(Register src, Register dst) {
-        var ret = buf(src, dst, 2);
-        ret.add((byte) 0x29);
-        ret.add((byte) (0b1100_0000 | (src.code32 << 3) | dst.code32)); // MODR/M byte
-
-        return new ByteImmutableList(ret);
+        return insnMR((byte) 0x29, src, dst);
     }
 
     /// Returns the IMUL dst, src instruction. That is, computes
