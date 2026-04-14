@@ -1,6 +1,7 @@
 package klaxon.klaxon.jbest.codegen;
 
 import static klaxon.klaxon.jbest.Util.bOfI;
+import static klaxon.klaxon.jbest.Util.bOfIs;
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
@@ -87,6 +88,16 @@ public class Amd64Ops {
         var ret = buf(src, dst, 2);
         ret.add((byte) 0x29);
         ret.add((byte) (0b1100_0000 | (src.code32 << 3) | dst.code32)); // MODR/M byte
+
+        return new ByteImmutableList(ret);
+    }
+
+    /// Returns the IMUL dst, src instruction. That is, computes
+    /// dst = dst * src
+    public static ByteImmutableList imul(Register src, Register dst) {
+        var ret = buf(dst, src, 3);
+        ret.addAll(bOfIs(0x0F, 0xAF));
+        ret.add((byte) (0b1100_0000 | (dst.code32 << 3) | src.code32)); // MODR/M byte
 
         return new ByteImmutableList(ret);
     }

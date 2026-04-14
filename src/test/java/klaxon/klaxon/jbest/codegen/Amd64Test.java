@@ -7,6 +7,7 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RAX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RBX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RDX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RSP;
+import static klaxon.klaxon.jbest.codegen.Amd64Ops.imul;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.movImmediate;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.add;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.sub;
@@ -41,5 +42,14 @@ public class Amd64Test {
         assertEquals(Util.bOfIs(0x41, 0x29, 0xd8), sub(RBX, R8));
         assertEquals(Util.bOfIs(0x44, 0x29, 0xd0), sub(R10, RAX));
         assertEquals(Util.bOfIs(0x44, 0x29, 0xdc), sub(R11, RSP));
+    }
+
+    @Test
+    void _mul() {
+        // Values from godbolt
+        assertEquals(Util.bOfIs(0x0f, 0xaf, 0xd0), imul(RAX, RDX));
+        assertEquals(Util.bOfIs(0x44, 0x0f, 0xaf, 0xc3), imul(RBX, R8));
+        assertEquals(Util.bOfIs(0x41, 0x0f, 0xaf, 0xc2), imul(R10, RAX));
+        assertEquals(Util.bOfIs(0x41, 0x0f, 0xaf, 0xe3), imul(R11, RSP));
     }
 }
