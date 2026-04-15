@@ -73,8 +73,8 @@ public class Amd64 implements Backend {
 
     public ByteArrayList programHeader() {
         final var buf = new ByteArrayList(0x40);
-        buf.addAll(Util.bOfI(PF_R | PF_X)); // permissions
         buf.addAll(Util.bOfI(0x01)); // Segment type - loadable
+        buf.addAll(Util.bOfI(PF_R | PF_X)); // permissions
         buf.addAll(bOfL(ELF_SIZE)); // segment address in binary
         buf.addAll(bOfL(0x0)); // address of segment in vmem
         buf.addAll(bOfL(0x0)); // address of code in memory. irrelevant for System V
