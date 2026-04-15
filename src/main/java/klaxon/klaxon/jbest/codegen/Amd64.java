@@ -42,34 +42,42 @@ public class Amd64 implements Backend {
 
     public ByteArrayList elfHeader() {
         final var buf = new ByteArrayList(0x40);
+
+        // e_ident
         buf.addAll(ELF_MAGIC);
         buf.add((byte) 2); // 2 for 64-bit
         buf.add((byte) 1); // 1 for little-endian
-        buf.add((byte) 3); // 3 for Linux
+        buf.add((byte) 3); // 3 for GNU ELF (i.e. Linux)
+        buf.add((byte) 3); // 3 for GNU ELF (i.e. Linux)
         buf.addAll(of(new byte[8])); // Padding bytes
+
         buf.addAll(Util.bOfIs(0x02, 0)); // Executable file type
         buf.addAll(Util.bOfIs(0x3E, 0)); // Target ISA
-        buf.addAll(Util.bOfIs(0x01, 0, 0, 0)); // 1 for ELF v1
+        buf.addAll(Util.bOfI(0x01)); // 1 for ELF v1
         buf.addAll(bOfL(ENTRY_ADDR)); // Entry point address in process address space
         buf.addAll(bOfL(0x40)); // Program header table address. (follows ELF header)
         buf.addAll(bOfL(0x00)); // Section header table address. Zero, we don't have one.
         buf.addAll(of(new byte[4])); // Processor-specific flags. Don't think we need it.
         buf.addAll(Util.bOfIs(0x40, 0)); // ELF Header size
         buf.addAll(Util.bOfIs(0x38, 0)); // Header table entry size
-        buf.addAll(Util.bOfIs(0, 0)); // Header table entry count
+        buf.addAll(Util.bOfIs(0x01, 0)); // Header table entry count
         buf.addAll(Util.bOfIs(0, 0)); // Section table entry size - not needed
         buf.addAll(Util.bOfIs(0, 0)); // Section table entry count
         buf.addAll(Util.bOfIs(0, 0)); // Section table names entry
         return buf;
     }
 
+    private static final int PF_X = 0x1;
+    private static final int PF_W = 0x2;
+    private static final int PF_R = 0x4;
+
     public ByteArrayList programHeader() {
         final var buf = new ByteArrayList(0x40);
-        buf.addAll(Util.bOfIs(0x01, 0, 0, 0)); // Segment type - loadable
-        buf.addAll(Util.bOfIs(0x05, 0, 0, 0)); // permissions - RX
-        buf.addAll(bOfL(ELF_SIZE + PH_SIZE)); // segment address in binary
-        buf.addAll(bOfL(0x0)); // address of code in segment
-        buf.addAll(bOfL(ENTRY_ADDR)); // address of code in memory
+        buf.addAll(Util.bOfI(PF_R | PF_X)); // permissions
+        buf.addAll(Util.bOfI(0x01)); // Segment type - loadable
+        buf.addAll(bOfL(ELF_SIZE)); // segment address in binary
+        buf.addAll(bOfL(0x0)); // address of segment in vmem
+        buf.addAll(bOfL(0x0)); // address of code in memory. irrelevant for System V
         buf.addAll(bOfL(output.size())); // segment size on disk
         buf.addAll(bOfL(output.size())); // segment size in memory
         buf.addAll(bOfL(0x00)); // no alignment
