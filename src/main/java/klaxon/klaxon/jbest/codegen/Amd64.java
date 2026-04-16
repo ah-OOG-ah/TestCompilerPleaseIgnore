@@ -1,6 +1,9 @@
 package klaxon.klaxon.jbest.codegen;
 
 import static it.unimi.dsi.fastutil.bytes.ByteImmutableList.of;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+import static klaxon.klaxon.jbest.Util.bOfIs;
 import static klaxon.klaxon.jbest.Util.bOfL;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RAX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RDX;
@@ -9,6 +12,11 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.VALUES;
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import klaxon.klaxon.jbest.AST.Node.LeafNode;
 import klaxon.klaxon.jbest.Util;
@@ -35,34 +43,39 @@ public class Amd64 implements Backend {
         freeRegisters.remove(RSP);
     }
 
-    private static final ByteImmutableList ELF_MAGIC = Util.bOfIs(0x7F, 'E', 'L', 'F');
+    private static final ByteImmutableList ELF_MAGIC = bOfIs(0x7F, 'E', 'L', 'F');
     private static final int ELF_SIZE = 0x40;
     private static final int PH_SIZE = 0x38;
+
+    private static ByteImmutableList eIdent() {
+        return bOfIs(
+            0x7F, 'E', 'L', 'F', // ELF magic
+            0x02, // EI_CLASS: ELF64
+            0x01, // EI_DATA: Little-endian
+            0x01, // EI_VERSION: EV_CURRENT
+            0x00, // EI_OSABI: ELFOSABI_GNU
+            0x00, // EI_ABIVERSION: zero, this is statically linked
+            0, 0, 0, 0, 0, 0, 0 // seven padding bytes
+        );
+    }
 
     public ByteArrayList elfHeader() {
         final var buf = new ByteArrayList(ELF_SIZE);
 
-        // e_ident
-        buf.addAll(ELF_MAGIC);
-        buf.add((byte) 2); // 2 for 64-bit
-        buf.add((byte) 1); // 1 for little-endian
-        buf.add((byte) 3); // 3 for GNU ELF (i.e. Linux)
-        buf.add((byte) 3); // 3 for GNU ELF (i.e. Linux)
-        buf.addAll(of(new byte[8])); // Padding bytes
-
-        buf.addAll(Util.bOfIs(0x02, 0)); // Executable file type
-        buf.addAll(Util.bOfIs(0x3E, 0)); // Target ISA
+        buf.addAll(eIdent());
+        buf.addAll(bOfIs(0x02, 0)); // Executable file type
+        buf.addAll(bOfIs(0x3E, 0)); // Target ISA
         buf.addAll(Util.bOfI(0x01)); // 1 for ELF v1
         buf.addAll(bOfL(0x00)); // Entry point address in process address space
         buf.addAll(bOfL(0x40)); // Program header table address. (follows ELF header)
         buf.addAll(bOfL(0x00)); // Section header table address. Zero, we don't have one.
         buf.addAll(of(new byte[4])); // Processor-specific flags. Don't think we need it.
-        buf.addAll(Util.bOfIs(0x40, 0)); // ELF Header size
-        buf.addAll(Util.bOfIs(0x38, 0)); // Header table entry size
-        buf.addAll(Util.bOfIs(0x01, 0)); // Header table entry count
-        buf.addAll(Util.bOfIs(0, 0)); // Section table entry size - not needed
-        buf.addAll(Util.bOfIs(0, 0)); // Section table entry count
-        buf.addAll(Util.bOfIs(0, 0)); // Section table names entry
+        buf.addAll(bOfIs(0x40, 0)); // ELF Header size
+        buf.addAll(bOfIs(0x38, 0)); // Header table entry size
+        buf.addAll(bOfIs(0x01, 0)); // Header table entry count
+        buf.addAll(bOfIs(0, 0)); // Section table entry size - not needed
+        buf.addAll(bOfIs(0, 0)); // Section table entry count
+        buf.addAll(bOfIs(0, 0)); // Section table names entry
         return buf;
     }
 
@@ -94,6 +107,15 @@ public class Amd64 implements Backend {
         buf.addAll(bOfL(output.size())); // segment size in memory
         buf.addAll(bOfL(0x00)); // no alignment
         return buf;
+    }
+
+    @Override
+    public void write(File file) throws IOException {
+        var out = elfHeader();
+        out.addAll(programHeader());
+        out.addAll(this.output);
+
+        Files.write(file.toPath(), out.toByteArray(), TRUNCATE_EXISTING, CREATE);
     }
 
     @Override
