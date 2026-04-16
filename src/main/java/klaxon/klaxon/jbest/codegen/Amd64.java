@@ -111,8 +111,11 @@ public class Amd64 implements Backend {
     }
 
     @Override
-    public Register sub(Register left, Register right) {
-        output.addAll(Amd64Ops.sub(right, left));
+    public Register div(Register left, Register right) {
+        output.addAll(Amd64Ops.mov(left, RAX));
+        output.add(Amd64Ops.cdq());
+        output.addAll(Amd64Ops.idiv(right));
+        output.addAll(Amd64Ops.mov(RAX, left));
         freeRegisters.add(right);
         return left;
     }
@@ -125,11 +128,8 @@ public class Amd64 implements Backend {
     }
 
     @Override
-    public Register div(Register left, Register right) {
-        output.addAll(Amd64Ops.mov(left, RAX));
-        output.add(Amd64Ops.cdq());
-        output.addAll(Amd64Ops.idiv(right));
-        output.addAll(Amd64Ops.mov(RAX, left));
+    public Register sub(Register left, Register right) {
+        output.addAll(Amd64Ops.sub(right, left));
         freeRegisters.add(right);
         return left;
     }
