@@ -46,6 +46,8 @@ public class Amd64 implements Backend {
     private static final ByteImmutableList ELF_MAGIC = bOfIs(0x7F, 'E', 'L', 'F');
     private static final int ELF_SIZE = 0x40;
     private static final int PH_SIZE = 0x38;
+    /// Technically, 0x0 is a valid entry point. However, I want to leave that open for nullptr.
+    private static final long ENTRY_PTR = 0xDEAD_BEEFL;
 
     private static ByteImmutableList eIdent() {
         return bOfIs(
@@ -66,7 +68,7 @@ public class Amd64 implements Backend {
         buf.addAll(bOfIs(0x02, 0)); // Executable file type
         buf.addAll(bOfIs(0x3E, 0)); // Target ISA
         buf.addAll(Util.bOfI(0x01)); // 1 for ELF v1
-        buf.addAll(bOfL(0x00)); // Entry point address in process address space
+        buf.addAll(bOfL(ENTRY_PTR)); // Entry point address in process address space
         buf.addAll(bOfL(0x40)); // Program header table address. (follows ELF header)
         buf.addAll(bOfL(0x00)); // Section header table address. Zero, we don't have one.
         buf.addAll(of(new byte[4])); // Processor-specific flags. Don't think we need it.
@@ -88,7 +90,7 @@ public class Amd64 implements Backend {
         buf.addAll(Util.bOfI(0x01)); // Segment type - loadable
         buf.addAll(Util.bOfI(PF_R | PF_X)); // permissions
         buf.addAll(bOfL(ELF_SIZE)); // segment address in binary
-        buf.addAll(bOfL(0x0)); // address of segment in vmem
+        buf.addAll(bOfL(ENTRY_PTR)); // address of segment in vmem
         buf.addAll(bOfL(0x0)); // address of code in memory. irrelevant for System V
         buf.addAll(bOfL(output.size())); // segment size on disk
         buf.addAll(bOfL(output.size())); // segment size in memory
