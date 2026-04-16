@@ -129,6 +129,13 @@ public class Amd64Ops {
         return new ByteImmutableList(ret);
     }
 
+    /// Returns the PUSH reg instruction.
+    public static ByteImmutableList push(Register register) {
+        var ret = buf(register, 1);
+        ret.add((byte) (0x50 | register.code32));
+        return new ByteImmutableList(ret);
+    }
+
     /// Returns the SUB dst, src instruction. That is, computes
     /// dst = dst - src
     public static ByteImmutableList sub(Register src, Register dst) { return insnMR((byte) 0x29, src, dst); }

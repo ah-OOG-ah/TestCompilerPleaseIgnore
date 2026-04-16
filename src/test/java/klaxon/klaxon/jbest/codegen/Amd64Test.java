@@ -12,6 +12,7 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.imul;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.mov;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.movImmediate;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.add;
+import static klaxon.klaxon.jbest.codegen.Amd64Ops.push;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.sub;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,6 +36,13 @@ public class Amd64Test {
         assertEquals(Util.bOfIs(0x41, 0x89, 0xd8), mov(RBX, R8));
         assertEquals(Util.bOfIs(0x44, 0x89, 0xd0), mov(R10, RAX));
         assertEquals(Util.bOfIs(0x44, 0x89, 0xdc), mov(R11, RSP));
+    }
+
+    @Test
+    void _push() {
+        // Values from godbolt
+        assertEquals(Util.bOfIs(0x50), push(RAX));
+        assertEquals(Util.bOfIs(0x41, 0x53), push(R11));
     }
 
     @Test
