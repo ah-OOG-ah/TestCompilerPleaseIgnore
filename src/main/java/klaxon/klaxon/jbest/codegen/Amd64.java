@@ -15,8 +15,6 @@ import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.StandardOpenOption;
 import java.util.List;
 import klaxon.klaxon.jbest.AST.Node.LeafNode;
 import klaxon.klaxon.jbest.Util;
@@ -33,7 +31,7 @@ public class Amd64 implements Backend {
     /// - esp (reserved for stack usage)
     private final RegisterSet freeRegisters;
 
-    private final ByteArrayList output = new ByteArrayList();
+    private final ByteArrayList secText = new ByteArrayList();
 
     public Amd64() {
         freeRegisters = new RegisterSet();
@@ -92,8 +90,8 @@ public class Amd64 implements Backend {
         buf.addAll(bOfL(ELF_SIZE)); // segment address in binary
         buf.addAll(bOfL(ENTRY_PTR)); // address of segment in vmem
         buf.addAll(bOfL(0x0)); // address of code in memory. irrelevant for System V
-        buf.addAll(bOfL(output.size())); // segment size on disk
-        buf.addAll(bOfL(output.size())); // segment size in memory
+        buf.addAll(bOfL(secText.size())); // segment size on disk
+        buf.addAll(bOfL(secText.size())); // segment size in memory
         buf.addAll(bOfL(0x00)); // no alignment
         return buf;
     }
@@ -105,8 +103,8 @@ public class Amd64 implements Backend {
         buf.addAll(bOfL(ELF_SIZE)); // segment address in binary
         buf.addAll(bOfL(0x0)); // address of segment in vmem
         buf.addAll(bOfL(0x0)); // address of code in memory. irrelevant for System V
-        buf.addAll(bOfL(output.size())); // segment size on disk
-        buf.addAll(bOfL(output.size())); // segment size in memory
+        buf.addAll(bOfL(secText.size())); // segment size on disk
+        buf.addAll(bOfL(secText.size())); // segment size in memory
         buf.addAll(bOfL(0x00)); // no alignment
         return buf;
     }
@@ -115,7 +113,7 @@ public class Amd64 implements Backend {
     public void write(File file) throws IOException {
         var out = elfHeader();
         out.addAll(programHeader());
-        out.addAll(this.output);
+        out.addAll(this.secText);
 
         Files.write(file.toPath(), out.toByteArray(), TRUNCATE_EXISTING, CREATE);
     }
@@ -123,37 +121,37 @@ public class Amd64 implements Backend {
     @Override
     public Register load(LeafNode leaf) {
         final var reg = freeRegisters.pop();
-        output.addAll(Amd64Ops.movImmediate(leaf.self, reg));
+        secText.addAll(Amd64Ops.movImmediate(leaf.self, reg));
         return reg;
     }
 
     @Override
     public Register add(Register left, Register right) {
-        output.addAll(Amd64Ops.add(right, left));
+        secText.addAll(Amd64Ops.add(right, left));
         freeRegisters.add(right);
         return left;
     }
 
     @Override
     public Register div(Register left, Register right) {
-        output.addAll(Amd64Ops.mov(left, RAX));
-        output.add(Amd64Ops.cdq());
-        output.addAll(Amd64Ops.idiv(right));
-        output.addAll(Amd64Ops.mov(RAX, left));
+        secText.addAll(Amd64Ops.mov(left, RAX));
+        secText.add(Amd64Ops.cdq());
+        secText.addAll(Amd64Ops.idiv(right));
+        secText.addAll(Amd64Ops.mov(RAX, left));
         freeRegisters.add(right);
         return left;
     }
 
     @Override
     public Register mul(Register left, Register right) {
-        output.addAll(Amd64Ops.imul(right, left));
+        secText.addAll(Amd64Ops.imul(right, left));
         freeRegisters.add(right);
         return left;
     }
 
     @Override
     public Register sub(Register left, Register right) {
-        output.addAll(Amd64Ops.sub(right, left));
+        secText.addAll(Amd64Ops.sub(right, left));
         freeRegisters.add(right);
         return left;
     }
