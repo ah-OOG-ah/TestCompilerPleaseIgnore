@@ -129,6 +129,13 @@ public class Amd64Ops {
         return new ByteImmutableList(ret);
     }
 
+    /// Returns the POP reg instruction.
+    public static ByteImmutableList pop(Register register) {
+        var ret = buf(register, 1);
+        ret.add((byte) (0x58 | register.code32));
+        return new ByteImmutableList(ret);
+    }
+
     /// Returns the PUSH reg instruction.
     public static ByteImmutableList push(Register register) {
         var ret = buf(register, 1);
