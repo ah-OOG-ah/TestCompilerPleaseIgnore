@@ -11,4 +11,7 @@ public interface Backend {
     default Register sub(Register right, Register left) { throw new UnsupportedOperationException(); }
     default Register mul(Register right, Register left) { throw new UnsupportedOperationException(); }
     default Register div(Register right, Register left) { throw new UnsupportedOperationException(); }
+
+    default void push(Register pushed) { throw new UnsupportedOperationException(); }
+    default void pop(Register popped) { throw new UnsupportedOperationException(); }
 }
