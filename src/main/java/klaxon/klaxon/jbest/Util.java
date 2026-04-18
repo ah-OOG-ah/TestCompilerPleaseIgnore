@@ -14,6 +14,14 @@ public class Util {
         return ByteImmutableList.of(inner);
     }
 
+    /// Convert a 16-bit (short) to a byte list, little-endian
+    public static ByteImmutableList bOfS(short i) {
+        return ByteImmutableList.of(
+                (byte) (i & 0xFF),
+                (byte) (i >> 8 & 0xFF)
+        );
+    }
+
     /// Convert a 32-bit (int) to a byte list, little-endian
     public static ByteImmutableList bOfI(int i) {
         return ByteImmutableList.of(
