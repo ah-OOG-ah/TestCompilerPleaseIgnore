@@ -12,7 +12,7 @@ public class Writer {
         final var block = new InputBlock(program);
         final var tokens = TokenIO.makeAllTokens(block);
         final var ast = PrattParser.getBinaryNode(new TokenStream(tokens), 0);
-        generate(ast, codegen);
+        codegen.output(generate(ast, codegen));
     }
 
     /// Recursively run codegen. Returns the register holding the value computed.

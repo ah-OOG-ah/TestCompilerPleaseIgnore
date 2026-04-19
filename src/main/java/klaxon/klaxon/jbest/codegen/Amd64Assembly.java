@@ -30,6 +30,11 @@ public class Amd64Assembly implements Backend {
     }
 
     @Override
+    public void output(Amd64Ops.Register value) {
+        code.append("EXIT ").append(value.name32).append("\n");
+    }
+
+    @Override
     public void write(File file) throws IOException {
         Files.writeString(file.toPath(), code.toString(), CREATE, TRUNCATE_EXISTING);
     }

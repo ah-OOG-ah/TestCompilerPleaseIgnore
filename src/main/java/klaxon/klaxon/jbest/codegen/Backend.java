@@ -18,4 +18,7 @@ public interface Backend {
     default void pop(Register popped) { throw new UnsupportedOperationException(); }
 
     default void write(File file) throws IOException { throw new UnsupportedOperationException(); }
+
+    /// Print the output stored in the given register... somehow, then exit.
+    default void output(Register generate) { throw new UnsupportedOperationException();  }
 }
