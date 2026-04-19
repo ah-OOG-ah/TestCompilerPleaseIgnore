@@ -16,7 +16,7 @@ public class Section {
     final long entsize;
 
     /// The size of a section header.
-    static final int SH_SIZE = 0x40;
+    static final short SH_SIZE = 0x40;
 
     enum Type {
         SHT_NULL(0x0),
@@ -64,8 +64,7 @@ public class Section {
 
     /// @param address Address of this section in virtual memory
     /// @param offset  Offset of this section in the file
-    /// @param index   Index of this section in the section table. 0 is the null index.
-    public ByteArrayList header(long address, long offset, int index) {
+    public ByteArrayList header(long address, long offset) {
         final var buf = new ByteArrayList(SH_SIZE);
         buf.addAll(bOfI(nameIdx)); // Index of the name in the .shstrtab section
         buf.addAll(bOfI(type.value)); // Type of section
@@ -81,7 +80,7 @@ public class Section {
     }
 
 
-    private static final ByteImmutableList EMPTY_SEC_HEADER;
+    static final ByteImmutableList EMPTY_SEC_HEADER;
     static {
         final var buf = new ByteArrayList(SH_SIZE);
         buf.addAll(bOfI(0)); // No name...

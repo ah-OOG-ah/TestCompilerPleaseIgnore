@@ -1,13 +1,11 @@
 package klaxon.klaxon.jbest.codegen;
 
-import static klaxon.klaxon.jbest.Util.bOfIs;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RAX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RDX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RSP;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.VALUES;
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
-import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -36,8 +34,6 @@ public class Amd64 implements Backend {
         freeRegisters.remove(RDX);
         freeRegisters.remove(RSP);
     }
-
-    private static final ByteImmutableList ELF_MAGIC = bOfIs(0x7F, 'E', 'L', 'F');
 
     @Override
     public void write(File file) throws IOException {
