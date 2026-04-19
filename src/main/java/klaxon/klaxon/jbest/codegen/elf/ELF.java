@@ -72,7 +72,7 @@ public class ELF {
     }
 
     public ByteImmutableList sectionCount() {
-        var count = sections.size();
+        var count = sections.size() + 1;
         if (count > 0x7F_FF) throw new IllegalStateException("Too many sections in ELF!");
         return bOfS((short) count);
     }
@@ -114,7 +114,7 @@ public class ELF {
 
     public int headersSize() {
         // An extra SH, for the null section
-        return ELF_SIZE + PH_SIZE + SH_SIZE * sections.size() + SH_SIZE;
+        return ELF_SIZE + PH_SIZE + SH_SIZE * (sections.size() + 1);
     }
 
     public int size() {
