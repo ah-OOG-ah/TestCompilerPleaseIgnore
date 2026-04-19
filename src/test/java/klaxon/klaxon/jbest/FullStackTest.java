@@ -1,6 +1,6 @@
 package klaxon.klaxon.jbest;
 
-import static klaxon.klaxon.jbest.codegen.Interpreter.interpret;
+import static klaxon.klaxon.jbest.Interpreter.interpret;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

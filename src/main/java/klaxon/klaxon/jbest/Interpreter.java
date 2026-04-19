@@ -1,7 +1,5 @@
-package klaxon.klaxon.jbest.codegen;
+package klaxon.klaxon.jbest;
 
-import klaxon.klaxon.jbest.AST;
-import klaxon.klaxon.jbest.PrattParser;
 import klaxon.klaxon.jbest.token.InputBlock;
 import klaxon.klaxon.jbest.token.TokenIO;
 import klaxon.klaxon.jbest.token.TokenStream;
