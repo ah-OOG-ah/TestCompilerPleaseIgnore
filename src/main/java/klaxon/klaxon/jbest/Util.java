@@ -1,6 +1,11 @@
 package klaxon.klaxon.jbest;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class Util {
     /// Treat a list of ints as a list of bytes. If any int is outside the byte range, this throws a
@@ -44,5 +49,13 @@ public class Util {
                 (byte) (addr >> 48 & 0xFF),
                 (byte) (addr >> 56 & 0xFF)
         );
+    }
+
+    /// Convert a string to a byte list, little-endian.
+    /// @throws IllegalArgumentException if given a non-ASCII string.
+    public static ByteImmutableList bOfASCII(String s) {
+        if (!US_ASCII.newEncoder().canEncode(s))
+            throw new IllegalArgumentException("Cannot encode non-ASCII string!");
+        return ByteImmutableList.of(s.getBytes(US_ASCII));
     }
 }
