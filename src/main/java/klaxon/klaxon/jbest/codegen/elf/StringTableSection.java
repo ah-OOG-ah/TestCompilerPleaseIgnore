@@ -9,8 +9,8 @@ public class StringTableSection extends Section {
     public static final int STN_UNDEF = 0x0;
     private final Object2IntArrayMap<String> indices = new Object2IntArrayMap<>();
 
-    StringTableSection(String name, int nameIdx, long entsize) {
-        super(name, nameIdx, Type.SHT_STRTAB, List.of(), entsize);
+    StringTableSection(String name, int nameIdx) {
+        super(name, nameIdx, Type.SHT_STRTAB, List.of(), 0);
         // The first byte must be null, so index 0 represents a null/none string
         data.add((byte) 0);
         indices.defaultReturnValue(STN_UNDEF);

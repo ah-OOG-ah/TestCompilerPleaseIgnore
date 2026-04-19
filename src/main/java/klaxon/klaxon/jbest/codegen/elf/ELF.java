@@ -8,9 +8,7 @@ import static klaxon.klaxon.jbest.Util.bOfS;
 import static klaxon.klaxon.jbest.codegen.elf.Section.Flag.SHF_ALLOC;
 import static klaxon.klaxon.jbest.codegen.elf.Section.Flag.SHF_EXECINSTR;
 import static klaxon.klaxon.jbest.codegen.elf.Section.SH_SIZE;
-import static klaxon.klaxon.jbest.codegen.elf.Section.Type.SHT_NULL;
 import static klaxon.klaxon.jbest.codegen.elf.Section.Type.SHT_PROGBITS;
-import static klaxon.klaxon.jbest.codegen.elf.Section.Type.SHT_STRTAB;
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import it.unimi.dsi.fastutil.bytes.ByteImmutableList;
@@ -21,13 +19,18 @@ import java.util.List;
 public class ELF {
     final ObjectArraySet<Section> sections = new ObjectArraySet<>();
     public final Section text;
-    final Section sectionHeaderStrtab;
+    /// Section names are stored here.
+    final StringTableSection shstrtab;
 
     public ELF() {
-        text = new Section(".text", 1, SHT_PROGBITS, List.of(SHF_EXECINSTR, SHF_ALLOC), 0);
+        // The first name index is hardcoded, because we don't have it yet
+        shstrtab = new StringTableSection(".shstrtab", 1);
+        var sstni = shstrtab.addString(".shstrtab");
+        assert(sstni == 1);
+
+        text = new Section(".text", shstrtab.addString(".text"), SHT_PROGBITS, List.of(SHF_EXECINSTR, SHF_ALLOC), 0);
         sections.add(text);
-        sectionHeaderStrtab = new Section(".shstrtab", 2, SHT_STRTAB, List.of(), 0);
-        sections.add(sectionHeaderStrtab);
+        sections.add(shstrtab);
     }
 
     /// Segments need to be aligned by this in virtual memory.
