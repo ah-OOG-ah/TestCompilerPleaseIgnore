@@ -6,7 +6,7 @@ import klaxon.klaxon.jbest.token.InputBlock;
 import klaxon.klaxon.jbest.token.TokenIO;
 import klaxon.klaxon.jbest.token.TokenStream;
 
-public class Assembler {
+public class Writer {
 
     public static void generate(String program, Backend codegen) {
         final var block = new InputBlock(program);
