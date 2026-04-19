@@ -27,10 +27,10 @@ public class ELF {
         shstrtab = new StringTableSection(".shstrtab", 1);
         var sstni = shstrtab.addString(".shstrtab");
         assert(sstni == 1);
+        sections.add(shstrtab);
 
         text = new Section(".text", shstrtab.addString(".text"), SHT_PROGBITS, List.of(SHF_EXECINSTR, SHF_ALLOC), 0);
         sections.add(text);
-        sections.add(shstrtab);
     }
 
     /// Segments need to be aligned by this in virtual memory.
