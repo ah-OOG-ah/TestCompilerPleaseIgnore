@@ -140,7 +140,6 @@ public class ELF {
         for (int i = 0; i < sectionCnt; ++i) {
             final int secSize = sections.get(i).data.size();
             secOffsets[i] = offset;
-            offset += secSize;
 
             // Address is more complicated, since it has to be aligned with the page size. That means
             // (addr - offset) % PAGE_SIZE == 0. If needed, the address is shifted instead of the offset, because vaddr
@@ -148,6 +147,8 @@ public class ELF {
             var pageAlignedAddr = roundUpToPageSize(addr);
             addr = pageAlignedAddr + (offset & PS_FMOD);
             secAddrs[i] = addr;
+
+            offset += secSize;
             addr += secSize;
         }
 
