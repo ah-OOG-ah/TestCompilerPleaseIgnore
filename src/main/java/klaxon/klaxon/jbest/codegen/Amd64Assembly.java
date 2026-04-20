@@ -28,16 +28,20 @@ public class Amd64Assembly implements Backend {
 
         code.append("""
                 BITS 64
-                SECTION .text
+                
+                extern printInt
                 global _start
+                
+                SECTION .text
                 _start:
                 """);
     }
 
     @Override
     public void output(Amd64Ops.Register value) {
-
-        code.append(Syscalls.exit(92));
+        code.append("  mov edi, ").append(value.name32).append("\n");
+        code.append("  call printInt\n");
+        code.append(Syscalls.exit(0));
     }
 
     @Override
