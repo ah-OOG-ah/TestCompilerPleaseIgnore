@@ -29,7 +29,7 @@ public class Amd64Assembly implements Backend {
 
     @Override
     public void output(Amd64Ops.Register value) {
-        code.append("EXIT ").append(value.name32).append("\n");
+        code.append(Syscalls.exit(92));
     }
 
     @Override

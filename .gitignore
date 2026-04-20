@@ -42,3 +42,4 @@ output
 test
 *.asm
 .gdb_history
+*.o

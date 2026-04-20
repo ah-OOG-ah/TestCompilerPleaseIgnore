@@ -36,11 +36,6 @@ public class Amd64 implements Backend {
     }
 
     @Override
-    public void output(Register generate) {
-        code.addAll(Syscalls.exit(84));
-    }
-
-    @Override
     public void write(File file) throws IOException {
         elf.write(file.toPath());
     }

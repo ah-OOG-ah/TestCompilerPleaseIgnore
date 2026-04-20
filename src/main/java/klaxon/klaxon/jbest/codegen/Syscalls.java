@@ -55,11 +55,12 @@ public class Syscalls {
     }
 
     /// May clobber any and all registers. It also doesn't matter, since we're exiting!
-    public static ByteArrayList exit(int value) {
-        final var ret = new ByteArrayList();
-        ret.addAll(movImmediate(60, RAX));
-        ret.addAll(movImmediate(value, RDI));
-        ret.addAll(syscall());
-        return ret;
+    public static String exit(int value) {
+        return """
+               mov eax, 60
+               mov edi,\s""" + value + """
+               
+               syscall
+               """;
     }
 }
