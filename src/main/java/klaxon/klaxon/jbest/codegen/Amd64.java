@@ -8,6 +8,7 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.VALUES;
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import klaxon.klaxon.jbest.AST.Node.LeafNode;
 import klaxon.klaxon.jbest.codegen.Amd64Ops.Register;
@@ -36,8 +37,8 @@ public class Amd64 implements Backend {
     }
 
     @Override
-    public void write(File file) throws IOException {
-        elf.write(file.toPath());
+    public void write(Path file) throws IOException {
+        elf.write(file);
     }
 
     @Override

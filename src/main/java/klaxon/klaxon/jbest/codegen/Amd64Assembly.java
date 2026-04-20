@@ -10,6 +10,7 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.VALUES;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import klaxon.klaxon.jbest.AST;
 
@@ -40,8 +41,8 @@ public class Amd64Assembly implements Backend {
     }
 
     @Override
-    public void write(File file) throws IOException {
-        Files.writeString(file.toPath(), code.toString(), CREATE, TRUNCATE_EXISTING);
+    public void write(Path file) throws IOException {
+        Files.writeString(file, code.toString(), CREATE, TRUNCATE_EXISTING);
     }
 
     @Override
