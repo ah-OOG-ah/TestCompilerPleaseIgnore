@@ -1,8 +1,5 @@
 package klaxon.klaxon.jbest;
 
-import static java.lang.Integer.parseInt;
-import static java.nio.CharBuffer.wrap;
-
 import java.io.File;
 import java.io.IOException;
 import klaxon.klaxon.jbest.codegen.Amd64;
