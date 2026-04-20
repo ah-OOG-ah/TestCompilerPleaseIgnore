@@ -10,7 +10,7 @@ import klaxon.klaxon.jbest.codegen.Amd64Assembly;
 public class Main {
 
     static void main(String[] args) throws IOException {
-        var input = "5 + 10 * 8";
+        var input = "2 + 3 * 5 - 8 / 3";
         var asm = new Amd64Assembly();
         Writer.generate(input, asm);
 
