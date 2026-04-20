@@ -7,7 +7,6 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RDX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RSP;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.VALUES;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
