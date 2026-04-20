@@ -57,10 +57,10 @@ public class Syscalls {
     /// May clobber any and all registers. It also doesn't matter, since we're exiting!
     public static String exit(int value) {
         return """
-               mov eax, 60
-               mov edi,\s""" + value + """
+               \s\smov eax, 60
+               \s\smov edi,\s""" + value + """
                
-               syscall
+                 syscall
                """;
     }
 }

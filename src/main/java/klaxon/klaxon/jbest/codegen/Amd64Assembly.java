@@ -25,6 +25,13 @@ public class Amd64Assembly implements Backend {
         freeRegisters.remove(RAX);
         freeRegisters.remove(RDX);
         freeRegisters.remove(RSP);
+
+        code.append("""
+                BITS 64
+                SECTION .text
+                global _start
+                _start:
+                """);
     }
 
     @Override
@@ -40,37 +47,37 @@ public class Amd64Assembly implements Backend {
     @Override
     public Amd64Ops.Register load(AST.Node.LeafNode leaf) {
         final var reg = freeRegisters.pop();
-        code.append("mov ").append(reg.name32).append(", ").append(leaf.self).append("\n");
+        code.append("  mov ").append(reg.name32).append(", ").append(leaf.self).append("\n");
         return reg;
     }
 
     @Override
     public Amd64Ops.Register add(Amd64Ops.Register left, Amd64Ops.Register right) {
-        code.append("add ").append(left.name32).append(", ").append(right.name32).append("\n");
+        code.append("  add ").append(left.name32).append(", ").append(right.name32).append("\n");
         freeRegisters.add(right);
         return left;
     }
 
     @Override
     public Amd64Ops.Register div(Amd64Ops.Register left, Amd64Ops.Register right) {
-        code.append("mov ").append(RAX.name32).append(", ").append(left.name32).append("\n");
-        code.append("cdq\n");
-        code.append("idiv ").append(right.name32).append("\n");
-        code.append("mov ").append(left.name32).append(", ").append(RAX.name32).append("\n");
+        code.append("  mov ").append(RAX.name32).append(", ").append(left.name32).append("\n");
+        code.append("  cdq\n");
+        code.append("  idiv ").append(right.name32).append("\n");
+        code.append("  mov ").append(left.name32).append(", ").append(RAX.name32).append("\n");
         freeRegisters.add(right);
         return left;
     }
 
     @Override
     public Amd64Ops.Register mul(Amd64Ops.Register left, Amd64Ops.Register right) {
-        code.append("imul ").append(left.name32).append(", ").append(right.name32).append("\n");
+        code.append("  imul ").append(left.name32).append(", ").append(right.name32).append("\n");
         freeRegisters.add(right);
         return left;
     }
 
     @Override
     public Amd64Ops.Register sub(Amd64Ops.Register left, Amd64Ops.Register right) {
-        code.append("sub ").append(left.name32).append(", ").append(right.name32).append("\n");
+        code.append("  sub ").append(left.name32).append(", ").append(right.name32).append("\n");
         freeRegisters.add(right);
         return left;
     }
