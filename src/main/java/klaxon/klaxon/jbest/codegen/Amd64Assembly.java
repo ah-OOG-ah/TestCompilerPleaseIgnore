@@ -7,13 +7,11 @@ import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RDX;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.RSP;
 import static klaxon.klaxon.jbest.codegen.Amd64Ops.Register.VALUES;
 
-import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import klaxon.klaxon.jbest.AST;
-import klaxon.klaxon.jbest.codegen.elf.ELF;
 
 public class Amd64Assembly implements Backend {
     private final StringBuilder code = new StringBuilder();
